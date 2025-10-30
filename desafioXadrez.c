@@ -1,58 +1,87 @@
 #include <stdio.h>
 
-int main() {
+// ----------------------------------------------------------
+// Funções recursivas: Torre, Bispo e Rainha
+// ----------------------------------------------------------
 
-    // ### Movimento da Torre ###
-    // A Torre se move em linha reta. Aqui ela anda 5 casas para a direita.
-    int casas_torre = 5;
+// --- TORRE ---
+// Move-se em linha reta. Movimento recursivo: 5 casas à direita.
+void moverTorre(int passo, int total) {
+    if (passo > total) return; // Condição de parada
+    printf("Direita (%d)\n", passo);
+    moverTorre(passo + 1, total); // Chamada recursiva para próxima casa
+}
 
-    printf("Movimento da Torre:\n");
-    for (int i = 1; i <= casas_torre; i++) {
-        printf("Direita (%d)\n", i);
+// --- BISPO ---
+// Move-se na diagonal. Movimento recursivo + loops aninhados.
+// 5 casas para cima e à direita.
+void moverBispo(int passo, int total) {
+    if (passo > total) return; // Condição de parada
+    // Loop aninhado: primeiro vertical, depois horizontal.
+    for (int i = 1; i <= 1; i++) { // movimento vertical
+        for (int j = 1; j <= 1; j++) { // movimento horizontal
+            printf("Cima, Direita (%d)\n", passo);
+        }
     }
+    moverBispo(passo + 1, total); // Chamada recursiva
+}
 
-    // ### Movimento do Bispo ###
-    // O Bispo se move em diagonal. Aqui ele anda 5 casas para cima e à direita.
-    int casas_bispo = 5;
-    int contador = 1;
-    
-    printf("\nMovimento do Bispo:\n");
-    while (contador <= casas_bispo) {
-        printf("Cima, Direita (%d)\n", contador);
-        contador++;
-    }
+// --- RAINHA ---
+// Move-se em todas as direções. Movimento recursivo: 8 casas à esquerda.
+void moverRainha(int passo, int total) {
+    if (passo > total) return;
+    printf("Esquerda (%d)\n", passo);
+    moverRainha(passo + 1, total);
+}
 
-    // ### Movimento da Rainha ###
-    // A Rainha se move em qualquer direção. Aqui ela anda 8 casas para a esquerda.
-    int casas_rainha = 8;
-    int contador_rainha = 1;
-    
-    printf("\nMovimento da Rainha:\n");
-    do {
-        printf("Esquerda (%d)\n", contador_rainha);
-        contador_rainha++;
-    } while (contador_rainha <= casas_rainha);
+// ----------------------------------------------------------
+// Cavalo — loops complexos com múltiplas variáveis e controle de fluxo
+// ----------------------------------------------------------
+// O Cavalo move-se em "L": duas casas para cima e uma para a direita.
+void moverCavalo() {
+    int movVertical = 2;
+    int movHorizontal = 1;
 
-    // --- Movimento do Cavalo ---
-    // O Cavalo se move em "L": duas casas em uma direção e uma perpendicular.
-    // Aqui ele anda duas casas para baixo e uma casa para a esquerda.
-    int casas_baixo = 2;
-    int casas_esquerda = 1;
+    printf("Movimento do Cavalo:\n");
+    // Loop externo controla o movimento vertical
+    for (int i = 1, j = 0; i <= movVertical; i++, j++) {
+        if (i == 1 && j == 0) {
+            printf("Cima (%d)\n", i);
+            continue; // Pula para o próximo movimento vertical
+        }
 
-    printf("\nMovimento do Cavalo:\n");
-
-    // Loop externo (for) controla o movimento para baixo.
-    for (int i = 1; i <= casas_baixo; i++) {
-        printf("Baixo (%d)\n", i);
-
-        // Loop interno (while) controla o movimento para a esquerda após descer.
-        if (i == casas_baixo) { // Executa o movimento lateral somente após as duas casas verticais
-            int j = 1;
-            while (j <= casas_esquerda) {
-                printf("Esquerda (%d)\n", j);
-                j++;
+        if (i == 2) {
+            printf("Cima (%d)\n", i);
+            // Loop interno: move uma casa à direita depois de subir 2
+            for (int k = 1; k <= movHorizontal; k++) {
+                if (k == 1) {
+                    printf("Direita (%d)\n", k);
+                    break; // Sai do loop interno após a casa lateral
+                }
             }
         }
     }
+}
+
+// ----------------------------------------------------------
+// Função principal
+// ----------------------------------------------------------
+int main() {
+    // --- TORRE ---
+    printf("Movimento da Torre:\n");
+    moverTorre(1, 5);
+
+    // --- BISPO ---
+    printf("\nMovimento do Bispo:\n");
+    moverBispo(1, 5);
+
+    // --- RAINHA ---
+    printf("\nMovimento da Rainha:\n");
+    moverRainha(1, 8);
+
+    // --- CAVALO ---
+    printf("\n");
+    moverCavalo();
+
     return 0;
 }
